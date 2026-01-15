@@ -3,24 +3,26 @@ enum class Color {
     Black,
     Red,
     Green,
+    Blue,
 };
 
 #include <iostream>
 
-// Overload the << operator for the Color enum class
-std::ostream& operator<<(std::ostream& os, Color color) {
-    switch (color) {
-        case Color::White: os << "White"; break;
-        case Color::Black: os << "Black"; break;
-        case Color::Red: os << "Red"; break;
-        case Color::Green: os << "Green"; break;
-    }
-    return os;
-}
+struct Point {
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
+    Color color;  // пусть у нас будет цветная точка
+};
 
-int main(){
-    Color color_1 = Color::Red;
-    Color color_2 = Color::Green;
 
-    std::cout << color_1 << "\n";
+int main() {
+    Point point1;  // по умолчанию координаты будут нулевыми, а color никак не будет проинициализирован
+    point1.color = Color::Blue;
+
+    Point point2 = {1.4, -2.2, -3.98, Color::Red};
+    // x = 1.4, y = -2.2, z = -3.98, color = Color::Red
+
+    point2.z = 32;  // обращаться к полям можно через точку
+    point2.x += 2;  // и вообще работать с ними как с обычными переменными
 }
