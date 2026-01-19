@@ -1,11 +1,9 @@
 #include <vector>
 #include <utility>
 #include <iostream>
-#include <deque>
-#include <algorithm>
 
-std::pair<int, int> FindMaxValues(std::vector<int>& vec) {
-    // Ищем два самых больших элемента в массиве
+int FindMaxValues(std::vector<int>& vec) {
+    // Ищем два самых больших элемента в массиве -- их произведение макс
     int big_max = vec[0];
     int small_max = vec[1];
     if (small_max > big_max){
@@ -26,35 +24,15 @@ std::pair<int, int> FindMaxValues(std::vector<int>& vec) {
         }
     }
 
-    return {small_max, big_max};
+    return small_max * big_max;
 }
 
 int main(){
-    int n, k;
-    std::cin >> n >> k;
-    std::deque<int> window;
-    long long ans = 0;
-
-    for(int i = 0; i < n; i++) {
-        int x;
-        std::cin >> x;
-        if(!window.empty()) {
-            std::vector<int> temp(window.begin(), window.end());
-            int max_prev;
-            if(temp.size() == 1) {
-                max_prev = temp[0];
-            } else {
-                auto p = FindMaxValues(temp);
-                max_prev = p.second;
-            }
-            long long prod = (long long) x * max_prev;
-            ans = std::max(ans, prod);
-        }
-        window.push_back(x);
-        if(window.size() > k) {
-            window.pop_front();
-        }
+    std::vector<int> vec = {1, 2, 2, 4, 8, 5, 7};
+    int k = 3;
+    int ans = -1;
+    
+    for (size_t i = 0; i != vec.size() - k; ++i){
+        int current = FindMaxValues(vec(begin(vec), end(vec)));
     }
-    std::cout << ans << std::endl;
-    return 0;
 }
