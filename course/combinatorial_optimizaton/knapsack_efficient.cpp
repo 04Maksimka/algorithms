@@ -120,7 +120,7 @@ int main() {
 
     std::cout << resultIndices.size() << "\n";
     for (size_t i = 0; i < resultIndices.size(); ++i) {
-        std::cout << resultIndices[i];
+        std::cout << resultIndices[i] << " ";
     }
     std::cout << "\n";
 
