@@ -2,10 +2,38 @@
 #include <queue>
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 class DualHeap {
     std::priority_queue<long long> maxHeap;
     std::priority_queue<long long, std::vector<long long>, std::greater<long long>> minHeap;
+    std::unordered_map<long long, int> deleted; // val → сколько раз помечен удалённым
+
+    void cleanMax() {
+        while (!maxHeap.empty()) {
+            long long top = maxHeap.top();
+            if (deleted.count(top) && deleted[top] > 0) {
+                deleted[top]--;
+                if (deleted[top] == 0) deleted.erase(top);
+                maxHeap.pop();
+            } else {
+                break;
+            }
+        }
+    }
+
+    void cleanMin() {
+        while (!minHeap.empty()) {
+            long long top = minHeap.top();
+            if (deleted.count(top) && deleted[top] > 0) {
+                deleted[top]--;
+                if (deleted[top] == 0) deleted.erase(top);
+                minHeap.pop();
+            } else {
+                break;
+            }
+        }
+    }
 
 public:
     void insert(long long val) {
@@ -14,40 +42,19 @@ public:
     }
 
     long long getMin() {
+        cleanMin();
         long long val = minHeap.top();
         minHeap.pop();
-        removeFromMax(val);
+        deleted[val]++;  // пометить как удалённый в maxHeap
         return val;
     }
 
     long long getMax() {
+        cleanMax();
         long long val = maxHeap.top();
         maxHeap.pop();
-        removeFromMin(val);
+        deleted[val]++;  // пометить как удалённый в minHeap
         return val;
-    }
-
-private:
-    void removeFromMax(long long val) {
-        std::vector<long long> tmp;
-        while (!maxHeap.empty()) {
-            long long top = maxHeap.top();
-            maxHeap.pop();
-            if (top == val) break;
-            tmp.push_back(top);
-        }
-        for (long long x : tmp) maxHeap.push(x);
-    }
-
-    void removeFromMin(long long val) {
-        std::vector<long long> tmp;
-        while (!minHeap.empty()) {
-            long long top = minHeap.top();
-            minHeap.pop();
-            if (top == val) break;
-            tmp.push_back(top);
-        }
-        for (long long x : tmp) minHeap.push(x);
     }
 };
 
